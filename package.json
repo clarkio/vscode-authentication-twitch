@@ -9,6 +9,7 @@
   "categories": [
     "Other"
   ],
+  "publisher": "clarkio",
   "preview": true,
   "activationEvents": [],
   "main": "./out/extension.js",
