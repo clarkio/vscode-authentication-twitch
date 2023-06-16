@@ -279,7 +279,7 @@ export class TwitchAuthenticationProvider
     scopes: string[]
   ): Promise<vscode.AuthenticationSession> {
     // const userInfo = await this._twitchServer.getUserInfo(token);
-    console.log(token);
+    // console.log(token);
     return {
       id: crypto
         .getRandomValues(new Uint32Array(2))

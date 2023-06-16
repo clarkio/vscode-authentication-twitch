@@ -12,7 +12,8 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(uriHandler);
 	context.subscriptions.push(vscode.window.registerUriHandler(uriHandler));
 
-	context.subscriptions.push(new TwitchAuthenticationProvider(context, uriHandler));
+	const twitchAuthProvider = new TwitchAuthenticationProvider(context, uriHandler);
+	context.subscriptions.push(twitchAuthProvider);
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('vscode-twitch-authprovider.signIn', async () => {
@@ -23,7 +24,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('vscode-twitch-authprovider.signOut', async () => {
-
+			const session = await vscode.authentication.getSession("twitch", [], { createIfNone: false });
+			if (session) {
+				await twitchAuthProvider.removeSession(session.id);
+			}
 		}));
 
 	context.subscriptions.push(

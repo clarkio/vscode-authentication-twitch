@@ -12,6 +12,8 @@ function sendFile(res: http.ServerResponse, filepath: string) {
       res.end();
     } else {
       res.writeHead(200, {
+        "Content-Type": filepath.endsWith('.css') ? "text/css" : "text/html",
+        "Cache-Control": "no-cache",
         'content-length': body.length,
       });
       res.end(body);
@@ -122,11 +124,11 @@ export class LoopbackAuthServer implements ILoopbackServer {
           return;
         }
         case '/complete': {
-          res.writeHead(200, {
-            "Content-Type": "text/html",
-            "Cache-Control": "no-cache",
-          });
           sendFile(res, path.join(serveRoot, 'index.html'))
+          break;
+        }
+        case '/index.css': {
+          sendFile(res, path.join(serveRoot, 'index.css'));
           break;
         }
         case "/favicon.ico": {
