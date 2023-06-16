@@ -11,6 +11,8 @@ function sendFile(res: http.ServerResponse, filepath: string) {
       res.writeHead(404);
       res.end();
     } else {
+      // Big thanks to @wwsean08 for this fix to get css files to load and render
+      // the html with styles properly!
       res.writeHead(200, {
         "Content-Type": filepath.endsWith('.css') ? "text/css" : "text/html",
         "Cache-Control": "no-cache",
