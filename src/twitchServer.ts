@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { env } from 'vscode';
 import * as path from 'path';
 import { PromiseAdapter, promiseFromEvent } from './common/utils';
-import { AuthProviderType, UriEventHandler } from './twitch';
+import { AuthProviderType, UriEventHandler } from './twitchAuthenticationProvider';
 import { Log } from './common/logger';
 import { isSupportedClient } from './common/env';
 import { LoopbackAuthServer } from './authServer';
@@ -67,22 +67,6 @@ export class TwitchServer implements ITwitchServer {
     }
     this._redirectEndpoint = 'http://localhost:40475/';
     return this._redirectEndpoint;
-    // const proxyEndpoints = await vscode.commands.executeCommand<
-    //   { [providerId: string]: string } | undefined
-    // >('workbench.getCodeExchangeProxyEndpoints');
-    // // If we are running in insiders vscode.dev, then ensure we use the redirect route on that.
-    // this._redirectEndpoint = REDIRECT_URL_STABLE;
-    // if (
-    //   proxyEndpoints?.twitch &&
-    //   new URL(proxyEndpoints.twitch).hostname === 'insiders.vscode.dev'
-    // ) {
-    //   this._redirectEndpoint = REDIRECT_URL_INSIDERS;
-    // }
-    // //return this._redirectEndpoint
-
-    // const publisher = this._packageJSON.publisher;
-    // const name = this._packageJSON.name;
-    // return `${env.uriScheme}://${publisher}.${name}`;
   }
 
   public async login(scopes: string): Promise<string> {
@@ -180,6 +164,7 @@ export class TwitchServer implements ITwitchServer {
           ['response_type', 'token'],
           ['scope', scopes],
           ['force_verify', 'true'],
+          ['claims', JSON.stringify({ userinfo: { preferred_username: null } })]
         ]);
 
         const loginUrl = this.baseUri.with({
@@ -192,7 +177,7 @@ export class TwitchServer implements ITwitchServer {
         );
         const port = await server.start();
 
-        let accessToken;
+        let accessTokenData;
         try {
           vscode.env.openExternal(
             vscode.Uri.parse(
@@ -201,7 +186,7 @@ export class TwitchServer implements ITwitchServer {
               )}`
             )
           );
-          accessToken = await Promise.race([
+          accessTokenData = await Promise.race([
             server.waitForOAuthResponse(),
             new Promise<any>((_, reject) =>
               setTimeout(() => reject(TIMED_OUT_ERROR), 300_000)
@@ -218,7 +203,7 @@ export class TwitchServer implements ITwitchServer {
             void server.stop();
           }, 5000);
         }
-        return accessToken;
+        return accessTokenData.accessToken;
       }
     );
   }
@@ -267,7 +252,7 @@ export class TwitchServer implements ITwitchServer {
       try {
         const json: any = await result.json();
         this._logger.info('Got account info!');
-        return { id: json.sub, accountName: json.sub };
+        return { id: json.sub, accountName: json.preferred_username };
       } catch (e: any) {
         this._logger.error(
           `Unexpected error parsing response from Twitch: ${e.message ?? e}`

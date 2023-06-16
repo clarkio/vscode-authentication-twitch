@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { TwitchAuthenticationProvider, UriEventHandler } from './twitch';
+import { TwitchAuthenticationProvider, UriEventHandler } from './twitchAuthenticationProvider';
 import { get } from 'node:http';
 
 // This method is called when your extension is activated
@@ -27,6 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
 			const session = await vscode.authentication.getSession("twitch", [], { createIfNone: false });
 			if (session) {
 				await twitchAuthProvider.removeSession(session.id);
+				vscode.window.showInformationMessage(`You have been signed out from Twitch 👋`);
 			}
 		}));
 
@@ -41,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
 const getSession = async () => {
 	const session = await vscode.authentication.getSession("twitch", [], { createIfNone: false });
 	if (session) {
-		vscode.window.showInformationMessage(`Welcome back test ${session.id}`)
+		vscode.window.showInformationMessage(`Welcome back ${session.account.label}`)
 	}
 }
 

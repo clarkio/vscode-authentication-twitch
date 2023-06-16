@@ -37,7 +37,7 @@ export class TwitchAuthenticationProvider
   private readonly _keychain: Keychain;
   private readonly _disposable: vscode.Disposable | undefined;
 
-  private _sessionsPromise: Promise<vscode.AuthenticationSession[]>;
+  private _getSessionsPromise: Promise<vscode.AuthenticationSession[]>;
 
   constructor(
     private readonly context: vscode.ExtensionContext,
@@ -58,7 +58,7 @@ export class TwitchAuthenticationProvider
     );
 
     // Contains the current state of the sessions we have available.
-    this._sessionsPromise = this.readSessions().then((sessions) => {
+    this._getSessionsPromise = this.readSessions().then((sessions) => {
       return sessions;
     });
 
@@ -88,7 +88,7 @@ export class TwitchAuthenticationProvider
       `Getting sessions for ${sortedScopes.length ? sortedScopes.join(',') : 'all scopes'
       }...`
     );
-    const sessions = await this._sessionsPromise;
+    const sessions = await this._getSessionsPromise;
     const finalSessions = sortedScopes.length
       ? sessions.filter((session) =>
         arrayEquals([...session.scopes].sort(), sortedScopes)
@@ -103,9 +103,9 @@ export class TwitchAuthenticationProvider
   }
 
   private async checkForUpdates() {
-    const previousSessions = await this._sessionsPromise;
-    this._sessionsPromise = this.readSessions();
-    const storedSessions = await this._sessionsPromise;
+    const previousSessions = await this._getSessionsPromise;
+    this._getSessionsPromise = this.readSessions();
+    const storedSessions = await this._getSessionsPromise;
 
     const added: vscode.AuthenticationSession[] = [];
     const removed: vscode.AuthenticationSession[] = [];
@@ -222,7 +222,7 @@ export class TwitchAuthenticationProvider
     sessions: vscode.AuthenticationSession[]
   ): Promise<void> {
     this._logger.info(`Storing ${sessions.length} sessions...`);
-    this._sessionsPromise = Promise.resolve(sessions);
+    this._getSessionsPromise = Promise.resolve(sessions);
     await this._keychain.setToken(JSON.stringify(sessions));
     this._logger.info(`Stored ${sessions.length} sessions!`);
   }
@@ -239,7 +239,7 @@ export class TwitchAuthenticationProvider
       const token = await this._twitchServer.login(scopeString);
       const session = await this.tokenToSession(token, scopes);
 
-      const sessions = await this._sessionsPromise;
+      const sessions = await this._getSessionsPromise;
       const sessionIndex = sessions.findIndex(
         (s) =>
           s.id === session.id || arrayEquals([...s.scopes].sort(), sortedScopes)
@@ -278,14 +278,18 @@ export class TwitchAuthenticationProvider
     token: string,
     scopes: string[]
   ): Promise<vscode.AuthenticationSession> {
-    // const userInfo = await this._twitchServer.getUserInfo(token);
+    const userInfo = await this._twitchServer.getUserInfo(token);
     // console.log(token);
+
+    // From Twitch Docs:
+    // Claim "sub" is the value of the User's ID on Twitch (ex: 12345678)
+    // Claim "preferred_username" is the value of the User's display name on Twitch (ex: clarkio)
     return {
       id: crypto
         .getRandomValues(new Uint32Array(2))
         .reduce((prev: any, curr: any) => (prev += curr.toString(16)), ''),
       accessToken: token,
-      account: { label: 'testing - userInfo.accountName', id: 'testing - userInfo.id' },
+      account: { label: userInfo.accountName, id: userInfo.id },
       scopes,
     };
   }
@@ -294,7 +298,7 @@ export class TwitchAuthenticationProvider
     try {
       this._logger.info(`Logging out of ${id}`);
 
-      const sessions = await this._sessionsPromise;
+      const sessions = await this._getSessionsPromise;
       const sessionIndex = sessions.findIndex((session) => session.id === id);
       if (sessionIndex > -1) {
         const session = sessions[sessionIndex];
