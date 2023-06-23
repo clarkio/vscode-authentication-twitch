@@ -1,4 +1,5 @@
 import * as http from 'http';
+import * as net from 'net';
 import { URL } from 'url';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -67,6 +68,7 @@ export class LoopbackAuthServer implements ILoopbackServer {
   private readonly _server: http.Server;
   private readonly _resultPromise: Promise<IOAuthResult>;
   private _startingRedirect: URL;
+  private openSockets: net.Socket[] = [];
 
   public nonce = randomBytes(16).toString('base64');
   public port: number | undefined;
@@ -98,7 +100,9 @@ export class LoopbackAuthServer implements ILoopbackServer {
       switch (reqUrl.pathname) {
         case '/signin': {
           const receivedNonce = (reqUrl.searchParams.get('nonce') ?? '').replace(/ /g, '+');
+
           if (receivedNonce !== this.nonce) {
+            deferred.reject(new Error('Nonce does not match.'));
             res.writeHead(302, { location: `/?error=${encodeURIComponent('Nonce does not match.')}` });
             res.end();
           }
@@ -110,11 +114,13 @@ export class LoopbackAuthServer implements ILoopbackServer {
           const accessToken = reqUrl.searchParams.get('access_token');
           const state = reqUrl.searchParams.get('state');
           if (!accessToken || !state) {
+            deferred.reject(new Error('Missing data that\'s required.'));
             res.writeHead(302, { location: `/?error=${encodeURIComponent('Missing data that\'s required.')}` });
             res.end();
             return;
           }
           if (this.state !== state) {
+            deferred.reject(new Error('State does not match.'));
             res.writeHead(302, { location: `/?error=${encodeURIComponent('State does not match.')}` });
             res.end();
             throw new Error('State does not match.');
@@ -178,6 +184,11 @@ export class LoopbackAuthServer implements ILoopbackServer {
 
         resolve(this.port);
       });
+      this._server.on('connection', (socket: net.Socket) => {
+        // Keep track of open sockets so we can destroy them when the server is stopped
+        // This will no longer be needed once VS Code updates to Node v18.2 or greater
+        this.openSockets.push(socket);
+      });
       this._server.on('error', err => {
         reject(new Error(`Error listening to server: ${err}`));
       });
@@ -193,6 +204,14 @@ export class LoopbackAuthServer implements ILoopbackServer {
       if (!this._server.listening) {
         throw new Error('Server is not started');
       }
+
+      // Manually destory all sockets so the server can fully close immediately
+      for (const socket of this.openSockets) {
+        if (!socket.destroyed) {
+          socket.destroy();
+        }
+      }
+
       this._server.close((err) => {
         if (err) {
           reject(err);

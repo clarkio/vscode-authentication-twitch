@@ -102,14 +102,14 @@ export class TwitchServer implements ITwitchServer {
     const nonce: string = crypto
       .getRandomValues(new Uint32Array(2))
       .reduce((prev, curr) => (prev += curr.toString(16)), '');
-    const callbackUri = await vscode.env.asExternalUri(
-      vscode.Uri.parse(
-        `${vscode.env.uriScheme
-        }://${publisher}.${name}/did-authenticate?nonce=${encodeURIComponent(
-          nonce
-        )}`
-      )
-    );
+    // const callbackUri = await vscode.env.asExternalUri(
+    //   vscode.Uri.parse(
+    //     `${vscode.env.uriScheme
+    //     }://${publisher}.${name}/did-authenticate?nonce=${encodeURIComponent(
+    //       nonce
+    //     )}`
+    //   )
+    // );
 
     // const supportedClient = isSupportedClient(callbackUri);
     // if (supportedClient) {
@@ -200,9 +200,11 @@ export class TwitchServer implements ITwitchServer {
           ]);
         } finally {
           setTimeout(() => {
+            this._logger.info('Stopping the login server...');
             void server.stop();
           }, 5000);
         }
+
         return accessTokenData.accessToken;
       }
     );

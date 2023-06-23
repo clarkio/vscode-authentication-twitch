@@ -66,7 +66,8 @@ export class TwitchAuthenticationProvider
       vscode.authentication.registerAuthenticationProvider(
         type,
         this._twitchServer.friendlyName,
-        this
+        this,
+        { supportsMultipleAccounts: false }
       ),
       this.context.secrets.onDidChange(() => this.checkForUpdates())
     );
@@ -237,6 +238,9 @@ export class TwitchAuthenticationProvider
 
       const scopeString = sortedScopes.join(' ');
       const token = await this._twitchServer.login(scopeString);
+      if (!token) {
+        throw new Error('There was an issue retrieving an access token');
+      }
       const session = await this.tokenToSession(token, scopes);
 
       const sessions = await this._getSessionsPromise;
@@ -279,8 +283,6 @@ export class TwitchAuthenticationProvider
     scopes: string[]
   ): Promise<vscode.AuthenticationSession> {
     const userInfo = await this._twitchServer.getUserInfo(token);
-    // console.log(token);
-
     // From Twitch Docs:
     // Claim "sub" is the value of the User's ID on Twitch (ex: 12345678)
     // Claim "preferred_username" is the value of the User's display name on Twitch (ex: clarkio)

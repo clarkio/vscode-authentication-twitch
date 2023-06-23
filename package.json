@@ -12,7 +12,9 @@
   "publisher": "clarkio",
   "preview": true,
   "main": "./out/extension.js",
-  "activationEvents": [],
+  "activationEvents": [
+    "*"
+  ],
   "capabilities": {
     "virtualWorkspaces": true
   },
