@@ -22,20 +22,6 @@
         "id": "twitch",
         "label": "Twitch"
       }
-    ],
-    "commands": [
-      {
-        "command": "vscode-twitch-authprovider.signIn",
-        "title": "Sign in",
-        "category": "Twitch",
-        "icon": "$(sign-in)"
-      },
-      {
-        "command": "vscode-twitch-authprovider.signOut",
-        "title": "Sign out",
-        "category": "Twitch",
-        "icon": "$(sign-out)"
-      }
     ]
   },
   "scripts": {

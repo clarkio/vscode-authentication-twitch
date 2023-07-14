@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import { describe, it } from 'mocha';
-const packageJSON = require('../../../package.json')
+const packageJSON = require('../../../package.json');
 
 describe('Extension', async () => {
 	// it('should be able to activate', async (done) => {
