@@ -1,3 +1,17 @@
+# [1.1.0](https://github.com/clarkio/vscode-authentication-twitch/compare/v1.0.1...v1.1.0) (2023-07-14)
+
+
+### Bug Fixes
+
+* rename workflow to proper name ([e2c649a](https://github.com/clarkio/vscode-authentication-twitch/commit/e2c649ac326cfe661f8e9eaaf8b6132308185d4e))
+* trigger a pre-release ([e552efb](https://github.com/clarkio/vscode-authentication-twitch/commit/e552efb41239a86c5cc4c789ce64f023b7e5a499))
+
+
+### Features
+
+* add separate manual release workflow ([5a9413b](https://github.com/clarkio/vscode-authentication-twitch/commit/5a9413bf62136d5a43cfb78dfedb8bcb9ead1320))
+* manual run workflow option ([d427011](https://github.com/clarkio/vscode-authentication-twitch/commit/d4270110350eb8d51dca81a1862df52886f20bf7))
+
 ## [1.0.1](https://github.com/clarkio/vscode-authentication-twitch/compare/v1.0.0...v1.0.1) (2023-07-14)
 
 
