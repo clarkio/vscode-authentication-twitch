@@ -33,7 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
 const getSession = async () => {
 	const session = await vscode.authentication.getSession("twitch", ["user:read:email"], { createIfNone: true });
 	if (session) {
-		vscode.window.showInformationMessage(`You are signed into Twitch as ${session.account.label}`)
+		vscode.window.showInformationMessage(`You are signed into Twitch as ${session.account.label}`);
 	};
 }
 
