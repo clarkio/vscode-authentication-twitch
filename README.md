@@ -2,4 +2,4 @@
 
 Twitch Authentication Provider for VS Code
 
-- Testing a pre-release version for now
+- Testing a pre-release version
