@@ -1,26 +1,41 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { TwitchAuthenticationProvider, UriEventHandler } from './twitchAuthenticationProvider';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+	console.log("Twitch Auth Provider Activated");
+	const uriHandler = new UriEventHandler();
+	context.subscriptions.push(uriHandler);
+	context.subscriptions.push(vscode.window.registerUriHandler(uriHandler));
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "authentication-twitch" is now active!');
+	const twitchAuthProvider = new TwitchAuthenticationProvider(context, uriHandler);
+	context.subscriptions.push(twitchAuthProvider);
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('authentication-twitch.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Twitch Authentication Provider!');
-	});
+	// register a command for signing in and out with twitch for local testing
+	// context.subscriptions.push(
+	// 	vscode.commands.registerCommand("vscode-twitch-authprovider.signIn", async () => {
+	// 		await getSession();
+	// 	})
+	// );
 
-	context.subscriptions.push(disposable);
-}
+	// context.subscriptions.push(
+	// 	vscode.commands.registerCommand("vscode-twitch-authprovider.signOut", async () => {
+	// 		const sessions = await twitchAuthProvider.getSessions();
+	// 		await twitchAuthProvider.removeSession(sessions[0].id);
+	// 		vscode.window.showInformationMessage(`You are signed out of Twitch now`);
+	// 	})
+	// );
+};
+
+const getSession = async () => {
+	const session = await vscode.authentication.getSession("twitch", ["user:read:email"], { createIfNone: true });
+	if (session) {
+		vscode.window.showInformationMessage(`You are signed into Twitch as ${session.account.label}`);
+	};
+};
 
 // This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { };

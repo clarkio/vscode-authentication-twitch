@@ -1,15 +1,23 @@
-import * as assert from 'assert';
-
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
 import * as vscode from 'vscode';
-// import * as myExtension from '../../extension';
+import * as assert from 'assert';
+import * as sinon from 'sinon';
+import { describe, it } from 'mocha';
+const packageJSON = require('../../../package.json');
 
-suite('Extension Test Suite', () => {
-	vscode.window.showInformationMessage('Start all tests.');
+describe('Extension', async () => {
+	// it('should be able to activate', async (done) => {
+	// 	console.log(`${packageJSON.publisher}.${packageJSON.name}`);
+	// 	await vscode.extensions.getExtension(`${packageJSON.publisher}.${packageJSON.name}`)?.activate();
+	// 	assert.ok(vscode.extensions.getExtension(`${packageJSON.publisher}.${packageJSON.name}`)?.isActive);
+	// 	done();
+	// });
 
-	test('Sample test', () => {
-		assert.strictEqual(-1, [1, 2, 3].indexOf(5));
-		assert.strictEqual(-1, [1, 2, 3].indexOf(0));
-	});
+	// it('should call vscode.authentication.getSession with "twitch" when the extension is activated', async (done) => {
+	// 	const getSessionSpy = sinon.spy(vscode.authentication, 'getSession');
+	// 	await vscode.extensions.getExtension(`${packageJSON.publisher}.${packageJSON.name}`)?.activate();
+	// 	console.log(getSessionSpy);
+	// 	assert.ok(getSessionSpy.calledWith("twitch"));
+	// 	getSessionSpy.restore();
+	// 	done();
+	// });
 });
