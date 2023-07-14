@@ -6,6 +6,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
   # This is to catch new releases of VS Code which could cause the extension to break
   # Check every Sunday at 12 AM
   schedule:
@@ -17,7 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        vscode-version: ['1.78.0', stable]
+        vscode-version: ["1.78.0", stable]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -115,7 +116,7 @@ jobs:
           # Uncomment name if you use matrix: include: instead
           # of matrix: os: above
           # name: ${{ matrix.target }}
-          path: '*.vsix'
+          path: "*.vsix"
 
   release:
     permissions:
