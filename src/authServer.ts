@@ -133,7 +133,7 @@ export class LoopbackAuthServer implements ILoopbackServer {
           return;
         }
         case '/complete': {
-          sendFile(res, path.join(serveRoot, 'index.html'))
+          sendFile(res, path.join(serveRoot, 'index.html'));
           break;
         }
         case '/index.css': {
