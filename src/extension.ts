@@ -13,17 +13,25 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const twitchAuthProvider = new TwitchAuthenticationProvider(context, uriHandler);
 	context.subscriptions.push(twitchAuthProvider);
-	getSession();
 
-	context.subscriptions.push(
-		vscode.authentication.onDidChangeSessions(async e => {
-			getSession();
-		})
-	);
+	// register a command for signing in and out with twitch for local testing
+	// context.subscriptions.push(
+	// 	vscode.commands.registerCommand("vscode-twitch-authprovider.signIn", async () => {
+	// 		await getSession();
+	// 	})
+	// );
+
+	// context.subscriptions.push(
+	// 	vscode.commands.registerCommand("vscode-twitch-authprovider.signOut", async () => {
+	// 		const sessions = await twitchAuthProvider.getSessions();
+	// 		await twitchAuthProvider.removeSession(sessions[0].id);
+	// 		vscode.window.showInformationMessage(`You are signed out of Twitch now`);
+	// 	})
+	// );
 }
 
 const getSession = async () => {
-	const session = await vscode.authentication.getSession("twitch", [], { createIfNone: false });
+	const session = await vscode.authentication.getSession("twitch", ["user:read:email"], { createIfNone: true });
 	if (session) {
 		vscode.window.showInformationMessage(`You are signed into Twitch as ${session.account.label}`)
 	}

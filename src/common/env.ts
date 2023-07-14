@@ -1,5 +1,4 @@
 import { Uri } from 'vscode';
-import { AuthProviderType } from '../twitch';
 
 const VALID_DESKTOP_CALLBACK_SCHEMES = [
   'vscode',
