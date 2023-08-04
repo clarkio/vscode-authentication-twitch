@@ -31,10 +31,11 @@ export function activate(context: vscode.ExtensionContext) {
 };
 
 const getSession = async () => {
-	const session = await vscode.authentication.getSession("twitch", ["user:read:email"], { createIfNone: true });
-	if (session) {
-		vscode.window.showInformationMessage(`You are signed into Twitch as ${session.account.label}`);
-	};
+	// const session = await vscode.authentication.getSession("twitch", ["TWITCH_CLIENT_ID:5thawqf7lsbw8alj87gbcaial7mi3e", "user:read:email"], { createIfNone: true });
+
+	// if (session) {
+	// 	vscode.window.showInformationMessage(`You are signed into Twitch as ${session.account.label}`);
+	// };
 };
 
 // This method is called when your extension is deactivated
