@@ -11,12 +11,6 @@ import fetch from 'node-fetch';
 import { webcrypto } from 'crypto';
 const fetching = fetch;
 
-const CLIENT_ID = '5thawqf7lsbw8alj87gbcaial7mi3e';
-
-export enum TwitchKeys {
-  "clientId" = "5thawqf7lsbw8alj87gbcaial7mi3e",
-  "scope" = "user:read:email",
-}
 const TWITCH_TOKEN_URL =
   'https://id.twitch.tv/oauth2/validate';
 
@@ -32,7 +26,7 @@ const REDIRECT_URL_STABLE = 'https://vscode.dev/redirect';
 const REDIRECT_URL_INSIDERS = 'https://insiders.vscode.dev/redirect';
 
 export interface ITwitchServer {
-  login(scopes: string): Promise<string>;
+  login(scopes: string, clientId: string): Promise<string>;
   getUserInfo(token: string): Promise<{ id: string; accountName: string }>;
   friendlyName: string;
 }
@@ -69,7 +63,7 @@ export class TwitchServer implements ITwitchServer {
     return this._redirectEndpoint;
   }
 
-  public async login(scopes: string): Promise<string> {
+  public async login(scopes: string, clientId: string): Promise<string> {
     this._logger.info(`Logging in for the following scopes: ${scopes}`);
 
     // Used for showing a friendlier message to the user when the explicitly cancel a flow.
@@ -133,7 +127,7 @@ export class TwitchServer implements ITwitchServer {
     ) {
       try {
         await promptToContinue(vscode.l10n.t('local server'));
-        return await this.doLoginWithLocalServer(scopes);
+        return await this.doLoginWithLocalServer(scopes, clientId);
       } catch (e: any) {
         userCancelled = this.processLoginError(e);
       }
@@ -144,7 +138,7 @@ export class TwitchServer implements ITwitchServer {
     );
   }
 
-  private async doLoginWithLocalServer(scopes: string): Promise<string> {
+  private async doLoginWithLocalServer(scopes: string, clientId: string): Promise<string> {
     this._logger.info(`Trying with local server... (${scopes})`);
     return await vscode.window.withProgress<string>(
       {
@@ -159,7 +153,7 @@ export class TwitchServer implements ITwitchServer {
       async (_, token) => {
         const redirectUri = await this.getRedirectEndpoint();
         const searchParams = new URLSearchParams([
-          ['client_id', CLIENT_ID],
+          ['client_id', clientId],
           ['redirect_uri', redirectUri],
           ['response_type', 'token'],
           ['scope', scopes],

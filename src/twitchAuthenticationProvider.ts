@@ -235,9 +235,16 @@ export class TwitchAuthenticationProvider
       // For Twitch scope list, order doesn't matter so we use a sorted scope to determine
       // if we've got a session already.
       const sortedScopes = [...scopes].sort();
+      let clientId = '<Please provide your own clientId in the scopes array>'
+      if (sortedScopes.length > 0) {
+        const clientIdScope = scopes.find(n => n.startsWith('TWITCH_CLIENT_ID:')) ?? '';
+        clientId = clientIdScope.slice(17); if (!clientId.length) throw new Error('The extension attempting to sign in with Twitch needs to provide a Client Id');
+      }
 
-      const scopeString = sortedScopes.join(' ');
-      const token = await this._twitchServer.login(scopeString);
+      // Don't send the Twitch Auth Provider custom scopes to the login flow for Twitch API
+      const filteredScopes = scopes.filter(n => !n.startsWith('TWITCH_'));
+      const scopeString = filteredScopes.join(' ');
+      const token = await this._twitchServer.login(scopeString, clientId);
       if (!token) {
         throw new Error('There was an issue retrieving an access token');
       }
