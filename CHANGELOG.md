@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/clarkio/vscode-authentication-twitch/compare/v1.1.1...v1.2.0) (2023-08-11)
+
+
+### Features
+
+* add build status badge ([1eabcbf](https://github.com/clarkio/vscode-authentication-twitch/commit/1eabcbf536ca24afa104d84024cef75be2961395))
+
 ## [1.1.1](https://github.com/clarkio/vscode-authentication-twitch/compare/v1.1.0...v1.1.1) (2023-08-04)
 
 
