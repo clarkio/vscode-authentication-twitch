@@ -1,0 +1,3 @@
+The account-cowboy-hat icon sourced from pictogrammers.com (https://pictogrammers.com/library/mdi/icon/account-cowboy-hat/) under the Apache 2.0 License was modified to be combined with Visual Studio Code original default extension icon and the Twitch Themer extension logo (https://github.com/build-with-me/vscode-twitch-themer/blob/main/resources/logo.png) for use in this Visual Studio Code Twitch Authentication Provider extension.
+
+Some code for this Visual Studio Code extension has been adapted from the built-in GitHub authentication provider extension that comes with Visual Studio Code. See the LICENSE-MIT-Microsoft for licensing on that.

@@ -12,10 +12,12 @@
   "publisher": "clarkio",
   "preview": true,
   "main": "./out/extension.js",
-  "activationEvents": [],
-  "capabilities": {
-    "virtualWorkspaces": true
+  "icon": "resources/logo.png",
+  "galleryBanner.color": {
+    "color": "#373436",
+    "theme": "dark"
   },
+  "activationEvents": [],
   "contributes": {
     "authentication": [
       {
@@ -69,7 +71,7 @@
     "url": "https://github.com/clarkio/vscode-authentication-twitch.git"
   },
   "vsce": {
-    "pre-release": true
+    "pre-release": false
   },
   "dependencies": {
     "node-fetch": "^2.6.11"
