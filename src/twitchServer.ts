@@ -90,9 +90,6 @@ export class TwitchServer implements ITwitchServer {
       }
     };
 
-    const publisher = this._packageJSON.publisher;
-    const name = this._packageJSON.name;
-    // return `${env.uriScheme}://${publisher}.${name}`;
     const nonce: string = crypto
       .getRandomValues(new Uint32Array(2))
       .reduce((prev, curr) => (prev += curr.toString(16)), '');
