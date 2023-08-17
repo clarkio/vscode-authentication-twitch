@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/clarkio/vscode-authentication-twitch/compare/v1.2.0...v1.2.1) (2023-08-17)
+
+
+### Bug Fixes
+
+* patch path traversal in login flow server ([b32b8fa](https://github.com/clarkio/vscode-authentication-twitch/commit/b32b8fa9ffe76802e8c5f0b000868424213b030e))
+
 # [1.2.0](https://github.com/clarkio/vscode-authentication-twitch/compare/v1.1.1...v1.2.0) (2023-08-11)
 
 
