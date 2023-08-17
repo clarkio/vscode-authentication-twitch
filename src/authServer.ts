@@ -6,7 +6,10 @@ import * as path from 'path';
 import { randomBytes, randomUUID } from 'crypto';
 
 function sendFile(res: http.ServerResponse, filepath: string) {
-  fs.readFile(filepath, (err, body) => {
+  const normalizedPath = path.normalize(filepath);
+  let sanitizedPath = normalizedPath.replace(/%2e/gi, '.');
+  sanitizedPath = sanitizedPath.replace(/%2f|%5c/gi, '/');
+  fs.readFile(sanitizedPath, (err, body) => {
     if (err) {
       console.error(err);
       res.writeHead(404);
@@ -15,10 +18,11 @@ function sendFile(res: http.ServerResponse, filepath: string) {
       // Big thanks to @wwsean08 for this fix to get css files to load and render
       // the html with styles properly!
       res.writeHead(200, {
-        contentType: "",
-        "Content-Type": filepath.endsWith('.css') ? "text/css" : "text/html",
-        "Cache-Control": "no-cache",
-        'content-length': body.length,
+        /* eslint-disable @typescript-eslint/naming-convention */
+        'Content-Type': filepath.endsWith('.css') ? 'text/css' : 'text/html',
+        'Cache-Control': 'no-cache',
+        'Content-Length': body.length,
+        /* eslint-disable @typescript-eslint/naming-convention */
       });
       res.end(body);
     }
@@ -93,18 +97,29 @@ export class LoopbackAuthServer implements ILoopbackServer {
       throw new Error('startingRedirect must be defined');
     }
     this._startingRedirect = new URL(startingRedirect);
-    let deferred: { resolve: (result: IOAuthResult) => void; reject: (reason: any) => void };
-    this._resultPromise = new Promise<IOAuthResult>((resolve, reject) => deferred = { resolve, reject });
+    let deferred: {
+      resolve: (result: IOAuthResult) => void;
+      reject: (reason: any) => void;
+    };
+    this._resultPromise = new Promise<IOAuthResult>(
+      (resolve, reject) => (deferred = { resolve, reject })
+    );
 
     this._server = http.createServer((req, res) => {
       const reqUrl = new URL(req.url!, `http://${req.headers.host}`);
       switch (reqUrl.pathname) {
         case '/signin': {
-          const receivedNonce = (reqUrl.searchParams.get('nonce') ?? '').replace(/ /g, '+');
+          const receivedNonce = (
+            reqUrl.searchParams.get('nonce') ?? ''
+          ).replace(/ /g, '+');
 
           if (receivedNonce !== this.nonce) {
             deferred.reject(new Error('Nonce does not match.'));
-            res.writeHead(302, { location: `/?error=${encodeURIComponent('Nonce does not match.')}` });
+            res.writeHead(302, {
+              location: `/?error=${encodeURIComponent(
+                'Nonce does not match.'
+              )}`,
+            });
             res.end();
           }
           res.writeHead(302, { location: this._startingRedirect.toString() });
@@ -115,14 +130,22 @@ export class LoopbackAuthServer implements ILoopbackServer {
           const accessToken = reqUrl.searchParams.get('access_token');
           const state = reqUrl.searchParams.get('state');
           if (!accessToken || !state) {
-            deferred.reject(new Error('Missing data that\'s required.'));
-            res.writeHead(302, { location: `/?error=${encodeURIComponent('Missing data that\'s required.')}` });
+            deferred.reject(new Error("Missing data that's required."));
+            res.writeHead(302, {
+              location: `/?error=${encodeURIComponent(
+                "Missing data that's required."
+              )}`,
+            });
             res.end();
             return;
           }
           if (this.state !== state) {
             deferred.reject(new Error('State does not match.'));
-            res.writeHead(302, { location: `/?error=${encodeURIComponent('State does not match.')}` });
+            res.writeHead(302, {
+              location: `/?error=${encodeURIComponent(
+                'State does not match.'
+              )}`,
+            });
             res.end();
             throw new Error('State does not match.');
           }
@@ -140,7 +163,7 @@ export class LoopbackAuthServer implements ILoopbackServer {
           sendFile(res, path.join(serveRoot, 'index.css'));
           break;
         }
-        case "/favicon.ico": {
+        case '/favicon.ico': {
           res.writeHead(204);
           res.end();
           break;
@@ -150,13 +173,13 @@ export class LoopbackAuthServer implements ILoopbackServer {
           sendFile(res, path.join(serveRoot, 'index.html'));
           break;
         }
+        // Default to sending root page
         default: {
-          // substring to get rid of leading '/'
-          sendFile(res, path.join(serveRoot, reqUrl.pathname.substring(1)));
+          sendFile(res, path.join(serveRoot, 'index.html'));
           break;
         }
       }
-    },);
+    });
   }
 
   public start(): Promise<number> {
@@ -190,7 +213,7 @@ export class LoopbackAuthServer implements ILoopbackServer {
         // This will no longer be needed once VS Code updates to Node v18.2 or greater
         this.openSockets.push(socket);
       });
-      this._server.on('error', err => {
+      this._server.on('error', (err) => {
         reject(new Error(`Error listening to server: ${err}`));
       });
       this._server.on('close', () => {
