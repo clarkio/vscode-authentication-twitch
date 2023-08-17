@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/clarkio/vscode-authentication-twitch/compare/v1.2.1...v1.2.2) (2023-08-17)
+
+
+### Bug Fixes
+
+* add needed module for conventional commits ([8e4420e](https://github.com/clarkio/vscode-authentication-twitch/commit/8e4420eca3cbdc11f35c55b320cd3b4f1d59dbb2))
+
 ## [1.2.1](https://github.com/clarkio/vscode-authentication-twitch/compare/v1.2.0...v1.2.1) (2023-08-17)
 
 
