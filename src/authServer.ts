@@ -105,6 +105,7 @@ export class LoopbackAuthServer implements ILoopbackServer {
       (resolve, reject) => (deferred = { resolve, reject })
     );
 
+    // file deepcode ignore NoRateLimitingForExpensiveWebOperation: while it would be normally necessary this server is spun up and down briefly for the duration of an authentication flow. Therefore any potential risk of DDOS is limited to a small window where this server is even available to respond., file deepcode ignore HttpToHttps: pretty much same reason as above however a possible concern is if a user is connected on a public network and triggers the authentication flow then a possible MITM attack could happen
     this._server = http.createServer((req, res) => {
       const reqUrl = new URL(req.url!, `http://${req.headers.host}`);
       switch (reqUrl.pathname) {
