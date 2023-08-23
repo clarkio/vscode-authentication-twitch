@@ -26,6 +26,9 @@
       }
     ]
   },
+  "extensionKind": [
+    "ui"
+  ],
   "scripts": {
     "vscode:prepublish": "npm run esbuild-base -- --minify",
     "esbuild-base": "rimraf out && copyfiles -au 1 ./src/login/* out/ && esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
