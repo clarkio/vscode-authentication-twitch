@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/clarkio/vscode-authentication-twitch/compare/v1.2.2...v1.2.3) (2023-08-24)
+
+
+### Bug Fixes
+
+* Added extensionKind to package.json to allow users to use the extension remotely ([6abf511](https://github.com/clarkio/vscode-authentication-twitch/commit/6abf5117078594b3c4f4342a43ef656dfc7b53e3))
+
 ## [1.2.2](https://github.com/clarkio/vscode-authentication-twitch/compare/v1.2.1...v1.2.2) (2023-08-17)
 
 

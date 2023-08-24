@@ -2,7 +2,7 @@
   "name": "vscode-twitch-authprovider",
   "displayName": "Twitch Authentication Provider",
   "description": "Twitch Authentication Provider for VS Code",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "engines": {
     "vscode": "^1.78.0"
   },
