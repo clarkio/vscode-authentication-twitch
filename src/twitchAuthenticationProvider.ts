@@ -235,10 +235,10 @@ export class TwitchAuthenticationProvider
       // For Twitch scope list, order doesn't matter so we use a sorted scope to determine
       // if we've got a session already.
       const sortedScopes = [...scopes].sort();
-      let clientId = '<Please provide your own clientId in the scopes array>'
+      let clientId = '<Please provide your own clientId in the scopes array>';
       if (sortedScopes.length > 0) {
         const clientIdScope = scopes.find(n => n.startsWith('TWITCH_CLIENT_ID:')) ?? '';
-        clientId = clientIdScope.slice(17); if (!clientId.length) throw new Error('The extension attempting to sign in with Twitch needs to provide a Client Id');
+        clientId = clientIdScope.slice(17); if (!clientId.length) { throw new Error('The extension attempting to sign in with Twitch needs to provide a Client Id'); }
       }
 
       // Don't send the Twitch Auth Provider custom scopes to the login flow for Twitch API
