@@ -92,8 +92,7 @@
       "secretlint --secretlintignore .gitignore"
     ],
     "*.{ts}": [
-      "npm run lint-precommit",
-      "git add"
+      "npm run lint-precommit"
     ]
   }
 }
