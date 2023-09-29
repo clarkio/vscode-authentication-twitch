@@ -91,7 +91,7 @@
     "*": [
       "secretlint --secretlintignore .gitignore"
     ],
-    "*.{ts}": [
+    "*.ts": [
       "npm run lint-precommit"
     ]
   }
