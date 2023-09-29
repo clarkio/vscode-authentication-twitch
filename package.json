@@ -43,9 +43,12 @@
     "test": "node ./out/test/runTest.js",
     "test-compile": "tsc -p ./",
     "semantic-release": "semantic-release",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "commitlint": "commitlint --edit"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.7.2",
+    "@commitlint/config-conventional": "^17.7.0",
     "@secretlint/secretlint-rule-pattern": "^7.0.7",
     "@secretlint/secretlint-rule-preset-recommend": "^7.0.7",
     "@semantic-release/changelog": "^6.0.3",
@@ -93,6 +96,11 @@
     ],
     "*.ts": [
       "npm run lint-precommit"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
     ]
   }
 }
