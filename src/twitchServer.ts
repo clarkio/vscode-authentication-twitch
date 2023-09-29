@@ -155,6 +155,7 @@ export class TwitchServer implements ITwitchServer {
           ['response_type', 'token'],
           ['scope', scopes],
           ['force_verify', 'true'],
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           ['claims', JSON.stringify({ userinfo: { preferred_username: null } })]
         ]);
 
@@ -219,9 +220,11 @@ export class TwitchServer implements ITwitchServer {
       this._logger.info('Getting user info...');
       result = await fetching(this.getServerUri('/oauth2/userinfo').toString(), {
         headers: {
+          /* eslint-disable @typescript-eslint/naming-convention */
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
           'User-Agent': `${vscode.env.appName} (${vscode.env.appHost})`,
+          /* eslint-enable @typescript-eslint/naming-convention */
         },
       });
     } catch (ex: any) {
@@ -271,14 +274,6 @@ export class TwitchServer implements ITwitchServer {
   // Used if you're following the OIDC authorization code grant flow
   private async exchangeCodeForToken(code: string): Promise<string> {
     this._logger.info('Exchanging code for token...');
-    // Call Twitch API to exchange code for token
-    /*
-    client_id=hof5gwx0su6owfnys0yan9c87zr6t
-    &client_secret=41vpdji4e9gif29md0ouet6fktd2
-    &code=gulfwdmys5lsm6qyz4xiz9q32l10
-    &grant_type=authorization_code
-    &redirect_uri=http://localhost:3000
-    */
 
     const proxyEndpoints: { [providerId: string]: string } | undefined =
       await vscode.commands.executeCommand(
@@ -293,9 +288,11 @@ export class TwitchServer implements ITwitchServer {
     const result = await fetching(endpointUrl, {
       method: 'POST',
       headers: {
+        /* eslint-disable @typescript-eslint/naming-convention */
         Accept: 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
         'Content-Length': body.toString(),
+        /* eslint-enable @typescript-eslint/naming-convention */
       },
       body: body.toString(),
     });
@@ -327,7 +324,9 @@ export class TwitchServer implements ITwitchServer {
       try {
         const validateResult = await fetch(url, {
           headers: {
+            /* eslint-disable @typescript-eslint/naming-convention */
             'Authorization': `Bearer ${token}`
+            /* eslint-enable @typescript-eslint/naming-convention */
           }
         });
 

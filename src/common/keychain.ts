@@ -5,8 +5,9 @@ export class Keychain {
   constructor(
     private readonly context: vscode.ExtensionContext,
     private readonly serviceId: string,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     private readonly Logger: Log
-  ) {}
+  ) { }
 
   async setToken(token: string): Promise<void> {
     try {
@@ -19,11 +20,13 @@ export class Keychain {
 
   async getToken(): Promise<string | null | undefined> {
     try {
+      // secretlint-disable
       const secret = await this.context.secrets.get(this.serviceId);
       if (secret && secret !== '[]') {
         this.Logger.trace('Token acquired from secret storage.');
       }
       return secret;
+      // secretlint-enable
     } catch (e) {
       // Ignore
       this.Logger.error(`Getting token failed: ${e}`);
