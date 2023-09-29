@@ -1,3 +1,11 @@
+## [1.2.4](https://github.com/clarkio/vscode-authentication-twitch/compare/v1.2.3...v1.2.4) (2023-09-29)
+
+
+### Bug Fixes
+
+* address eslint issues ([7472865](https://github.com/clarkio/vscode-authentication-twitch/commit/7472865dccc4fe1bc8a45328743d7de8217b8f27))
+* correct glob pattern for ts files ([a8dd336](https://github.com/clarkio/vscode-authentication-twitch/commit/a8dd33644f92ef26eb17622428c1b50e6c024a4a))
+
 ## [1.2.3](https://github.com/clarkio/vscode-authentication-twitch/compare/v1.2.2...v1.2.3) (2023-08-24)
 
 

@@ -2,7 +2,7 @@
   "name": "vscode-twitch-authprovider",
   "displayName": "Twitch Authentication Provider",
   "description": "Twitch Authentication Provider for VS Code",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "engines": {
     "vscode": "^1.78.0"
   },
@@ -103,7 +103,11 @@
       "@commitlint/config-conventional"
     ],
     "rules": {
-      "body-max-line-length": [1, "always", 100]
+      "body-max-line-length": [
+        1,
+        "always",
+        100
+      ]
     }
   }
 }
