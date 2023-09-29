@@ -38,7 +38,8 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
+    "lint": "eslint src --ext ts --max-warnings=0",
+    "lint-precommit": "eslint --ext ts --max-warnings=0 --ignore-path .gitignore --fix",
     "test": "node ./out/test/runTest.js",
     "test-compile": "tsc -p ./",
     "semantic-release": "semantic-release",
@@ -89,6 +90,10 @@
   "lint-staged": {
     "*": [
       "secretlint --secretlintignore .gitignore"
+    ],
+    "*.{ts}": [
+      "npm run lint-precommit",
+      "git add"
     ]
   }
 }
