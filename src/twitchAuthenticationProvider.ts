@@ -306,7 +306,6 @@ export class TwitchAuthenticationProvider
   public async removeSession(id: string) {
     try {
       this._logger.info(`Logging out of ${id}`);
-      this._logger.info(`Just testing real quick`);
 
       const sessions = await this._getSessionsPromise;
       const sessionIndex = sessions.findIndex((session) => session.id === id);
