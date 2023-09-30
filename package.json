@@ -88,7 +88,7 @@
     "pre-release": false
   },
   "dependencies": {
-    "node-fetch": "^2.6.11"
+    "node-fetch": "^2.7.0"
   },
   "lint-staged": {
     "*": [
