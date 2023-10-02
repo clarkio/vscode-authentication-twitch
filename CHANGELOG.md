@@ -1,3 +1,10 @@
+## [1.2.5](https://github.com/clarkio/vscode-authentication-twitch/compare/v1.2.4...v1.2.5) (2023-10-02)
+
+
+### Bug Fixes
+
+* upgrade node-fetch from 2.6.11 to 2.7.0 ([0cf601e](https://github.com/clarkio/vscode-authentication-twitch/commit/0cf601e72403043dd4f9dd1f833fbdbcb5137af7))
+
 ## [1.2.4](https://github.com/clarkio/vscode-authentication-twitch/compare/v1.2.3...v1.2.4) (2023-09-29)
 
 
