@@ -1,3 +1,16 @@
+# [1.3.0](https://github.com/clarkio/vscode-authentication-twitch/compare/v1.2.5...v1.3.0) (2024-01-10)
+
+
+### Bug Fixes
+
+* test runner error ([f54cd8f](https://github.com/clarkio/vscode-authentication-twitch/commit/f54cd8ff4ea4f128e7fb52d91003ec021a77c78a))
+
+
+### Features
+
+* **ci:** enable openvsx deploy ([13ad5ee](https://github.com/clarkio/vscode-authentication-twitch/commit/13ad5eee43500b909cef777a4899ec2219187837))
+* **man-release:** enable openvsx deploy ([d71b02d](https://github.com/clarkio/vscode-authentication-twitch/commit/d71b02d34c4eda1c03f8a17576a4a88ff0173bad))
+
 ## [1.2.5](https://github.com/clarkio/vscode-authentication-twitch/compare/v1.2.4...v1.2.5) (2023-10-02)
 
 
